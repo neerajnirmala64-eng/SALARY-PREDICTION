@@ -9,9 +9,9 @@ encoder = joblib.load("label_encoder.pkl")
 st.title("Salary Prediction App")
 
 age = st.number_input("Age", 18, 100)
-gender = st.selectbox("Gender", encoder["gender"].classes_)
+gender = st.selectbox("Gender", encoder["Gender"].classes_)
 education = st.selectbox("Education Level", encoder["Education Level"].classes_)
-job_title = st.selectbox("Job Title", encoder["job title"].classes_)
+job_title = st.selectbox("Job Title", encoder["Job Title"].classes_)
 years_of_exp = st.number_input("Years of Experience", 0, 40)
 
 # Create dataframe correctly
@@ -19,7 +19,7 @@ df = pd.DataFrame({
     "Age": [age],
     "gender": [gender],
     "Education Level": [education],
-    "job title": [job_title],
+    "Job Title": [job_title],
     "Years of Experience": [years_of_exp]
 })
 
