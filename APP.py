@@ -24,9 +24,14 @@ df = pd.DataFrame({
 })
 
 if st.button("Predict"):
+    # Create a copy so we don't overwrite the original numeric data by accident
+    input_df = df.copy()
 
-    # Apply encoders
-    for col in encoder:
-        df[col] = encoder[col].transform(df[col])
-    prediction = model.predict(df)
-    st.success(f"Predicted Salary: {prediction[0]:,.2f}")
+    # Apply encoders only to the categorical columns
+    for col, transformer in encoder.items():
+        if col in input_df.columns:
+            input_df[col] = transformer.transform(input_df[col])
+    
+    # Ensure the column order matches what the model saw during training
+    prediction = model.predict(input_df)
+    st.success(f"Predicted Salary: ${prediction[0]:,.2f}")
