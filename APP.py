@@ -12,7 +12,7 @@ age = st.number_input("Age", 18, 100)
 gender = st.selectbox("Gender",encoder["Gender"].classes_)
 education = st.selectbox("Education Level",encoder["Education Level"].classes_)
 job_title = st.selectbox("Job Title",encoder["Job Title"].classes_)
-years_of_exp = st.number_input("Years of Experience", 0, 40)
+years_of_exp = st.number_input("Years of Experience", 0, 50)
 
 # Create dataframe correctly
 df = pd.DataFrame({
@@ -24,14 +24,8 @@ df = pd.DataFrame({
 })
 
 if st.button("Predict"):
-    # Create a copy so we don't overwrite the original numeric data by accident
-    input_df = df.copy()
-
-    # Apply encoders only to the categorical columns
-    for col, transformer in encoder.items():
-        if col in input_df.columns:
-            input_df[col] = transformer.transform(input_df[col])
-    
-    # Ensure the column order matches what the model saw during training
-    prediction = model.predict(input_df)
-    st.success(f"Predicted Salary: ${prediction[0]:,.2f}")
+    for col in encoder:
+        df[col] = encoder[col].transform(df[col])
+    prediction = model.predict(df)
+    st.success(f"Predicted Salary: {prediction[0]:,.2f}")
+    st.success(f"Result: {result[0]}")
